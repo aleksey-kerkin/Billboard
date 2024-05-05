@@ -22,8 +22,9 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
-    "allauth",
     "billboard.apps.BillboardConfig",
+    "allauth",
+    "ckeditor",
 ]
 
 MIDDLEWARE = [
