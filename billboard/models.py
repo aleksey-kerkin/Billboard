@@ -2,7 +2,9 @@ from django.db import models
 from django.contrib.auth.models import User
 from django.urls import reverse
 
-from ckeditor.fields import RichTextField
+from django_ckeditor_5.fields import CKEditor5Field
+
+# TODO Redifine models
 
 
 class Category(models.Model):
@@ -19,9 +21,7 @@ class Category(models.Model):
         ("Spellmaster", "Мастер заклинаний"),
     ]
     name = models.CharField(max_length=17, choices=TYPES, unique=True)
-    subscribers = models.ManyToManyField(
-        User, blank=True, null=True, related_name="categories"
-    )
+    subscribers = models.ManyToManyField(User, blank=True, related_name="categories")
 
     def __str__(self):
         return self.name
@@ -32,7 +32,7 @@ class Post(models.Model):
         Category, on_delete=models.CASCADE, verbose_name="Категория"
     )
     title = models.CharField(max_length=100, verbose_name="Заголовок")
-    text = RichTextField(verbose_name="Текст")
+    text = CKEditor5Field(config_name="default", verbose_name="Текст")
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
