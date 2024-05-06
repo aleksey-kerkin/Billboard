@@ -4,11 +4,9 @@ from django.urls import reverse
 
 from django_ckeditor_5.fields import CKEditor5Field
 
-# TODO Redifine models
 
-
-class Category(models.Model):
-    TYPES = [
+class Anoncement(models.Model):
+    CATEGORIES = [
         ("Tank", "Танк"),
         ("Heal", "Хил"),
         ("DD", "ДД"),
@@ -20,22 +18,12 @@ class Category(models.Model):
         ("Alchemist", "Зельевар"),
         ("Spellmaster", "Мастер заклинаний"),
     ]
-    name = models.CharField(max_length=17, choices=TYPES, unique=True)
-    subscribers = models.ManyToManyField(User, blank=True, related_name="categories")
-
-    def __str__(self):
-        return self.name
-
-
-class Post(models.Model):
-    category = models.ForeignKey(
-        Category, on_delete=models.CASCADE, verbose_name="Категория"
-    )
-    title = models.CharField(max_length=100, verbose_name="Заголовок")
+    title = models.CharField(null=False, blank=False, max_length=100, verbose_name="Заголовок")
+    category = models.CharField(max_length=17, choices=CATEGORIES, verbose_name="Категория")
     text = CKEditor5Field(config_name="default", verbose_name="Текст")
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
-    created = models.DateTimeField(auto_now_add=True)
-    updated = models.DateTimeField(auto_now=True)
+    user = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name="Пользователь")
+    created = models.DateTimeField(auto_now_add=True, verbose_name="Создано")
+    updated = models.DateTimeField(auto_now=True, verbose_name="Обновлено")
 
     def __str__(self):
         return self.title
@@ -44,13 +32,13 @@ class Post(models.Model):
         return reverse("post", args=[str(self.id)])
 
 
-class Reply(models.Model):
-    post = models.ForeignKey(Post, on_delete=models.CASCADE)
+class Response(models.Model):
+    anoncement = models.ForeignKey(Anoncement, on_delete=models.CASCADE, verbose_name="Объявление")
+    user = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name="Пользователь")
     text = models.TextField(max_length=10000, verbose_name="Текст")
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
     status = models.BooleanField(default=False, verbose_name="Статус")
-    created = models.DateTimeField(auto_now_add=True)
-    updated = models.DateTimeField(auto_now=True)
+    created = models.DateTimeField(auto_now_add=True, verbose_name="Создано")
+    updated = models.DateTimeField(auto_now=True, verbose_name="Обновлено")
 
     def __str__(self):
         return f"Ответ на {self.post.title} от {self.user.username}"
