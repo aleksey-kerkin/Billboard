@@ -18,10 +18,16 @@ class Anoncement(models.Model):
         ("Alchemist", "Зельевар"),
         ("Spellmaster", "Мастер заклинаний"),
     ]
-    title = models.CharField(null=False, blank=False, max_length=100, verbose_name="Заголовок")
-    category = models.CharField(max_length=17, choices=CATEGORIES, verbose_name="Категория")
+    title = models.CharField(
+        null=False, blank=False, max_length=100, verbose_name="Заголовок"
+    )
+    category = models.CharField(
+        max_length=17, choices=CATEGORIES, verbose_name="Категория"
+    )
     text = CKEditor5Field(config_name="default", verbose_name="Текст")
-    user = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name="Пользователь")
+    user = models.ForeignKey(
+        User, on_delete=models.CASCADE, verbose_name="Пользователь"
+    )
     created = models.DateTimeField(auto_now_add=True, verbose_name="Создано")
     updated = models.DateTimeField(auto_now=True, verbose_name="Обновлено")
 
@@ -33,8 +39,12 @@ class Anoncement(models.Model):
 
 
 class Response(models.Model):
-    anoncement = models.ForeignKey(Anoncement, on_delete=models.CASCADE, verbose_name="Объявление")
-    user = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name="Пользователь")
+    anoncement = models.ForeignKey(
+        Anoncement, on_delete=models.CASCADE, verbose_name="Объявление"
+    )
+    user = models.ForeignKey(
+        User, on_delete=models.CASCADE, verbose_name="Пользователь"
+    )
     text = models.TextField(max_length=10000, verbose_name="Текст")
     status = models.BooleanField(default=False, verbose_name="Статус")
     created = models.DateTimeField(auto_now_add=True, verbose_name="Создано")
