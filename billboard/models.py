@@ -5,7 +5,7 @@ from django.urls import reverse
 from django_ckeditor_5.fields import CKEditor5Field
 
 
-class Anoncement(models.Model):
+class Announcement(models.Model):
     CATEGORIES = [
         ("Tank", "Танк"),
         ("Heal", "Хил"),
@@ -40,7 +40,7 @@ class Anoncement(models.Model):
 
 class Response(models.Model):
     anoncement = models.ForeignKey(
-        Anoncement, on_delete=models.CASCADE, verbose_name="Объявление"
+        Announcement, on_delete=models.CASCADE, verbose_name="Объявление"
     )
     user = models.ForeignKey(
         User, on_delete=models.CASCADE, verbose_name="Пользователь"
