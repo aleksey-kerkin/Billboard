@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+  <h1>Announcements</h1>
+  {% for announcement in announcements %}
+    <div class="card mb-3">
+      <div class="card-body">
+        <h5 class="card-title"><a href="#">{{ announcement.title }}</a></h5>
+        <p class="card-text">{{ announcement.text|safe }}</p>
+        <p class="card-text">
+          <small class="text-muted">Created by {{ announcement.user.username }} at {{ announcement.created }}</small>
+        </p>
+      </div>
+    </div>
+  {% empty %}
+    <p>No announcements yet.</p>
+  {% endfor %}
+{% endblock %}

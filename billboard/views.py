@@ -16,7 +16,7 @@ class AnnouncementListView(ListView):
     context_object_name = "announcements"
     template_name = "announcement_list.html"
     paginate_by = 10
-    ordering = ["-created_at"]
+    ordering = ["-created"]
 
 
 class AnnouncementDetailView(DetailView):
