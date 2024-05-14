@@ -5,10 +5,11 @@
   {% for announcement in announcements %}
     <div class="card mb-3">
       <div class="card-body">
-        <h5 class="card-title"><a href="#">{{ announcement.title }}</a></h5>
-        <p class="card-text">{{ announcement.text|safe }}</p>
+        <h2 class="card-title"><a href="#">{{ announcement.title }}</a></h2>
+        <h5 class="card-title"><a href="#">{{ announcement.category }}</a></h5>
+        <p class="card">{{ announcement.text|safe }}</p>
         <p class="card-text">
-          <small class="text-muted">Created by {{ announcement.user.username }} at {{ announcement.created }}</small>
+          <small class="text-muted">Created by {{ announcement.user.username }} at {{ announcement.created|date:'Y-m-d H:i' }}</small>
         </p>
       </div>
     </div>

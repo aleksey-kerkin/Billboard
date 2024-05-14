@@ -5,14 +5,16 @@ from .models import Announcement, Response
 
 
 class AnnouncementForm(forms.ModelForm):
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields["text"].required = False
+
+    text = forms.CharField(widget=CKEditor5Widget(config_name="default"))
+
     class Meta:
         model = Announcement
-        fields = ["title", "text"]
-        widgets = {
-            "text": CKEditor5Widget(
-                attrs={"class": "django-ckeditor-5"}, config_name="announcement"
-            ),
-        }
+        fields = ["title", "category", "text"]
 
 
 class ResponseForm(forms.ModelForm):

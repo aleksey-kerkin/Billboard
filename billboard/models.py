@@ -44,3 +44,8 @@ class Response(models.Model):
 
     def __str__(self):
         return f"Ответ на {self.post.title} от {self.user.username}"
+
+
+# class Subscription(models.Model):
+#     user = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name="Пользователь")
+#     subscribed = models.BooleanField(default=False, verbose_name="Подписан")

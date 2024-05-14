@@ -31,6 +31,10 @@ class AnnouncementCreateView(CreateView):
     template_name = "announcement_create.html"
     success_url = reverse_lazy("announcement_list")
 
+    def form_valid(self, form):
+        form.instance.user = self.request.user
+        return super().form_valid(form)
+
 
 class AnnouncementUpdateView(UpdateView):
     model = Announcement
@@ -50,6 +54,10 @@ class ResponseCreateView(CreateView):
     form_class = ResponseForm
     context_object_name = "response"
     template_name = "response_create.html"
+
+    def form_valid(self, form):
+        form.instance.user = self.request.user
+        return super().form_valid(form)
 
 
 # class ResponseUpdateView(UpdateView):
