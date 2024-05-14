@@ -1,11 +1,10 @@
 {% extends 'base.html' %}
-{% load static %}
 {% block content %}
-  <h1>Announcements</h1>
-  {% for announcement in announcements %}
-    <div class="card mb-3">
-      <div class="card-body">
-        <h2 class="card-title"><a href={% url "announcement_detail" announcement.pk %}>{{ announcement.title }}</a></h2>
+  <h1>Announcement details</h1>
+  <div class="card mb-3">
+    <div class="card-body">
+      <div class="embedly-card">
+        <h2 class="card-title"><a href="#">{{ announcement.title }}</a></h2>
         <h5 class="card-title"><a href="#">{{ announcement.category }}</a></h5>
         <p class="embedly-card">{{ announcement.text|safe }}</p>
         <p class="card-text">
@@ -13,7 +12,5 @@
         </p>
       </div>
     </div>
-  {% empty %}
-    <p>No announcements yet.</p>
-  {% endfor %}
+  </div>
 {% endblock %}

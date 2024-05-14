@@ -133,6 +133,8 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 # CKEditor configuration
 
+# CKEDITOR_5_ALLOW_ALL_FILE_TYPES = True
+
 customColorPalette = [
     {"color": "hsl(4, 90%, 58%)", "label": "Red"},
     {"color": "hsl(340, 82%, 52%)", "label": "Pink"},
@@ -213,6 +215,7 @@ CKEDITOR_5_CONFIGS = {
             "mediaEmbed",
             "removeFormat",
             "insertTable",
+            "mediaEmbed",
         ],
         "image": {
             "toolbar": [
@@ -284,4 +287,7 @@ CKEDITOR_5_CONFIGS = {
             "reversed": "true",
         }
     },
+    "mediaEmbed": {
+        "previewsInData": True,
+    }
 }
