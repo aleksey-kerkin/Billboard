@@ -44,13 +44,13 @@
                       <hr class="dropdown-divider" />
                     </li>
                     <li>
-                      <a class="dropdown-item" href="#">Logout</a>
+                      <a class="dropdown-item" href={% url "account_logout" %}>Logout</a>
                     </li>
                   </ul>
                 </li>
               {% else %}
                 <li class="nav-item">
-                  <a class="nav-link" href="#">Войти</a>
+                  <a class="nav-link" href={% url "account_login" %}>Войти</a>
                 </li>
               {% endif %}
             </ul>
