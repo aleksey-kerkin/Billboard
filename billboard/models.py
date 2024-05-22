@@ -6,7 +6,7 @@ from django_ckeditor_5.fields import CKEditor5Field
 
 
 class Category(models.Model):
-    tank = "TN"
+    tank = "TK"
     heal = "HL"
     dd = "DD"
     trader = "TR"
@@ -42,7 +42,7 @@ class Category(models.Model):
     )
 
     def __str__(self):
-        return self.name
+        return self.get_name_display()
 
     class Meta:
         verbose_name = "Категория"
