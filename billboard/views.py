@@ -1,3 +1,5 @@
+from django.conf import settings
+from django.http import Http404, JsonResponse
 from django.urls import reverse_lazy
 from django.views.generic import (
     ListView,
@@ -6,8 +8,10 @@ from django.views.generic import (
     UpdateView,
     DeleteView,
 )
+from django_ckeditor_5.views import NoImageException, handle_uploaded_file, image_verify
 from .models import Announcement, Response
 from .forms import AnnouncementForm, ResponseForm
+from django_ckeditor_5.forms import UploadFileForm
 
 
 class AnnouncementListView(ListView):
@@ -98,22 +102,26 @@ class ResponseUpdateView(UpdateView):
     template_name = "response_create.html"
     success_url = reverse_lazy("announcement_list")
 
-    # def get_queryset(self):
-    #     # Получаем объявление по pk
-    #     announcement = get_object_or_404(Announcement, pk=self.kwargs["pk"])
-    #     # Фильтруем ответы по объявлению и текущему пользователю
-    #     return Response.objects.filter(announcement=announcement, user=self.request.user)
-
-    # def get_success_url(self):
-    #     announcement = Announcement.objects.get(pk=self.kwargs["pk"])
-    #     return reverse_lazy("announcement_detail", args=[announcement.pk])
-
 
 class ResponseDeleteView(DeleteView):
     model = Response
     template_name = "response_delete.html"
     success_url = reverse_lazy("announcement_list")
 
-    # def get_success_url(self):
-    #     announcement = Announcement.objects.get(pk=self.kwargs["pk"])
-    #     return reverse_lazy("announcement_detail", args=[announcement.pk])
+
+# Кастомная функция для загрузки файлом (в случчае сайта - изображений),
+#  разрешающая загрузку всем авторизированным пользователям
+def custom_upload_function(request):
+    if request.method == "POST" and request.user.is_active:
+        form = UploadFileForm(request.POST, request.FILES)
+        allow_all_file_types = getattr(settings, "CKEDITOR_5_ALLOW_ALL_FILE_TYPES", False)
+
+        if not allow_all_file_types:
+            try:
+                image_verify(request.FILES["upload"])
+            except NoImageException as ex:
+                return JsonResponse({"error": {"message": f"{ex}"}}, status=400)
+        if form.is_valid():
+            url = handle_uploaded_file(request.FILES["upload"])
+            return JsonResponse({"url": url})
+    raise Http404("Page not found.")

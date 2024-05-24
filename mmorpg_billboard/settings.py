@@ -131,7 +131,7 @@ USE_TZ = True
 STATIC_URL = "/static/"
 MEDIA_URL = "/media/"
 MEDIA_ROOT = BASE_DIR / "media"
-CKEDITOR_UPLOAD_PATH = "/uploads/"
+CKEDITOR_UPLOAD_PATH = "uploads/"
 
 # Default primary key field type
 
@@ -139,8 +139,11 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 # CKEditor configuration
 
+CK_EDITOR_5_UPLOAD_FILE_VIEW_NAME = "custom_upload_file"
 CKEDITOR_5_ALLOW_ALL_FILE_TYPES = True
-CKEDITOR_5_UPLOAD_FILE_TYPES = ["jpeg", "pdf", "png"]
+CKEDITOR_5_UPLOAD_FILE_TYPES = ["jpeg", "jpg", "pdf", "png"]
+CK_EDITOR_5_UPLOAD_RESIZE_IMAGES = True
+CKEDITOR_THUMBNAIL_SIZE = (500, 500)
 
 customColorPalette = [
     {"color": "hsl(4, 90%, 58%)", "label": "Red"},
@@ -171,11 +174,30 @@ CKEDITOR_5_CONFIGS = {
             "numberedList",
             "blockQuote",
             "|",
-            # "imageUpload",
             "insertImage",
             "mediaEmbed",
             "link",
         ],
+        "image": {
+            "toolbar": [
+                "imageTextAlternative",
+                "|",
+                "imageStyle:alignLeft",
+                "imageStyle:alignRight",
+                "imageStyle:alignCenter",
+                "imageStyle:side",
+                "|",
+                "imageResize",
+                "imageEdit",
+            ],
+            "styles": [
+                "full",
+                "side",
+                "alignLeft",
+                "alignRight",
+                "alignCenter",
+            ],
+        },
     },
     "extends": {
         "blockToolbar": [
@@ -294,7 +316,7 @@ CKEDITOR_5_CONFIGS = {
             "reversed": "true",
         }
     },
-    "mediaEmbed": {
-        "previewsInData": True,
-    },
+    # "mediaEmbed": {
+    #     "previewsInData": True,
+    # },
 }
