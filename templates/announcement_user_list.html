@@ -9,8 +9,8 @@
         <p class="card-text">{{ announcement.text|safe }}</p>
         <a href="{% url 'announcement_detail' announcement.pk %}" class="btn btn-primary">Go to announcement</a>
         {% if request.user == announcement.user %}
-        <a href="{% url 'announcement_update' announcement.pk %}" class="btn btn-warning">Редактировать</a>
-        <a href="{% url 'announcement_delete' announcement.pk %}" class="btn btn-danger">Удалить</a>
+        <a href="{% url 'announcement_update' announcement.pk %}" class="btn btn-warning">Edit</a>
+        <a href="{% url 'announcement_delete' announcement.pk %}" class="btn btn-danger">Delete</a>
         {% endif %}
       </div>
     </div>

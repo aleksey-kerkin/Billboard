@@ -3,7 +3,7 @@
 {% block content %}
   <h1>Delete announcement</h1>
   <p>Are you sure you want to delete this announcement?</p>
-  <h5>"{{ announcement.title }}</h5>
+  <h5>"{{ announcement.title }}"</h5>
   <form method="post">
     {% csrf_token %}
     <button type="submit" class="btn btn-danger">Delete</button>
