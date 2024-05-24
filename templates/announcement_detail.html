@@ -11,6 +11,28 @@
           <small class="text-muted">Created by {{ announcement.user.username }} at {{ announcement.created|date:'Y-m-d H:i' }}</small>
         </p>
       </div>
+      {% if request.user == announcement.user %}
+        <a href="{% url 'announcement_update' announcement.pk %}" class="btn btn-warning">Edit</a>
+        <a href="{% url 'announcement_delete' announcement.pk %}" class="btn btn-danger">Delete</a>
+      {% endif %}
     </div>
+    <h2>Responses</h2>
+    {% for response in responses %}
+      <div class="card mb-3">
+        <div class="card-body">
+          <p class="card-text">{{ response.text }}</p>
+          <p class="card-text">
+            <small class="text-muted">Created by {{ announcement.user.username }} at {{ announcement.created|date:'Y-m-d H:i' }}</small>
+          </p>
+        </div>
+        {% if request.user == response.user %}
+          <a href="{% url 'response_update' response.pk %}" class="btn btn-warning">Edit</a>
+          <a href="{% url 'response_delete' response.pk %}" class="btn btn-danger">Delete</a>
+        {% endif %}
+      </div>
+    {% empty %}
+      <p>No responses yet.</p>
+    {% endfor %}
+    <a href="{% url 'response_create' announcement.pk %}" class="btn btn-primary">Reply</a>
   </div>
 {% endblock %}

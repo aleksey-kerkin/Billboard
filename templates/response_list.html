@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+
+{% block content %}
+  <h1>Your responses</h1>
+  {% for response in object_list %}
+    <div class="card mb-3">
+      <div class="card-body">
+        <h5 class="card-title">Response on "{{ response.announcement.title }}"</h5>
+        <p class="card-text">{{ response.text }}</p>
+        <a href="{% url 'announcement_detail' response.announcement.pk %}" class="btn btn-primary">Go to announcement</a>
+        {% if request.user == response.user %}
+          <a href="{% url 'response_update' response.pk %}" class="btn btn-warning">Редактировать</a>
+          <a href="{% url 'response_delete' response.pk%}" class="btn btn-danger">Удалить</a>
+        {% endif %}
+      </div>
+    </div>
+  {% empty %}
+    <p>No responses yet.</p>
+  {% endfor %}
+{% endblock %}

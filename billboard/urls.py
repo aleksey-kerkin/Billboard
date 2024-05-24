@@ -1,23 +1,34 @@
 from django.urls import path
 from .views import (
     AnnouncementListView,
+    AnnouncementUserListView,
     AnnouncementDetailView,
     AnnouncementCreateView,
     AnnouncementUpdateView,
     AnnouncementDeleteView,
     ResponseCreateView,
+    ResponseListView,
+    ResponseUpdateView,
     ResponseDeleteView,
 )
 
 
 urlpatterns = [
-    path("", AnnouncementListView.as_view(), name="announcement_list"),
+    path(
+        "",
+        AnnouncementListView.as_view(),
+        name="announcement_list",
+    ),
     path(
         "<int:pk>/",
         AnnouncementDetailView.as_view(),
         name="announcement_detail",
     ),
-    path("create/", AnnouncementCreateView.as_view(), name="announcement_create"),
+    path(
+        "create/",
+        AnnouncementCreateView.as_view(),
+        name="announcement_create",
+    ),
     path(
         "<int:pk>/update/",
         AnnouncementUpdateView.as_view(),
@@ -34,8 +45,23 @@ urlpatterns = [
         name="response_create",
     ),
     path(
-        "<int:pk>/response/<int:response_pk>/delete/",
+        "response/<int:pk>/update/",
+        ResponseUpdateView.as_view(),
+        name="response_update",
+    ),
+    path(
+        "response/<int:pk>/delete/",
         ResponseDeleteView.as_view(),
         name="response_delete",
+    ),
+    path(
+        "profile/<user>/my_responses",
+        ResponseListView.as_view(),
+        name="response_list",
+    ),
+    path(
+        "profile/<user>/my_announcements",
+        AnnouncementUserListView.as_view(),
+        name="profile",
     ),
 ]

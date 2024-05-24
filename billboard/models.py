@@ -71,7 +71,7 @@ class Announcement(models.Model):
 
 
 class Response(models.Model):
-    anoncement = models.ForeignKey(
+    announcement = models.ForeignKey(
         Announcement, on_delete=models.CASCADE, verbose_name="Объявление"
     )
     user = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name="Пользователь")
