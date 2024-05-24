@@ -128,10 +128,10 @@ USE_TZ = True
 
 # Static files (CSS, JavaScript, Images)
 
-STATIC_URL = "static/"
-MEDIA_URL = "media/"
+STATIC_URL = "/static/"
+MEDIA_URL = "/media/"
 MEDIA_ROOT = BASE_DIR / "media"
-CKEDITOR_UPLOAD_PATH = "uploads/"
+CKEDITOR_UPLOAD_PATH = "/uploads/"
 
 # Default primary key field type
 
@@ -139,7 +139,8 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 # CKEditor configuration
 
-# CKEDITOR_5_ALLOW_ALL_FILE_TYPES = True
+CKEDITOR_5_ALLOW_ALL_FILE_TYPES = True
+CKEDITOR_5_UPLOAD_FILE_TYPES = ["jpeg", "pdf", "png"]
 
 customColorPalette = [
     {"color": "hsl(4, 90%, 58%)", "label": "Red"},
@@ -295,5 +296,5 @@ CKEDITOR_5_CONFIGS = {
     },
     "mediaEmbed": {
         "previewsInData": True,
-    }
+    },
 }
