@@ -1,5 +1,6 @@
 from django.conf import settings
 from django.http import Http404, JsonResponse
+from django.shortcuts import redirect
 from django.urls import reverse_lazy
 from django.views.generic import (
     ListView,
@@ -9,7 +10,10 @@ from django.views.generic import (
     DeleteView,
 )
 from django_ckeditor_5.views import NoImageException, handle_uploaded_file, image_verify
-from .models import Announcement, Response
+
+# from billboard.filters import ResponseFilter
+from billboard.tasks import notify_approved_response, notify_new_response
+from .models import Announcement, Response, User
 from .forms import AnnouncementForm, ResponseForm
 from django_ckeditor_5.forms import UploadFileForm
 
@@ -42,6 +46,14 @@ class AnnouncementDetailView(DetailView):
         context = super().get_context_data(**kwargs)
         context["responses"] = Response.objects.filter(announcement=self.object)
         return context
+
+    def form_valid(self, form):
+        response = form.save(commit=False)
+        response.user = User.objects.get(id=self.request.user.id)
+        response.announcement = Announcement.objects.get(id=self.kwargs.get("pk"))
+        response.save()
+        notify_new_response(response.id)
+        return redirect("announcement_list")
 
 
 class AnnouncementCreateView(CreateView):
@@ -95,6 +107,14 @@ class ResponseListView(ListView):
     def get_queryset(self):
         return Response.objects.filter(user=self.request.user)
 
+    # def get_queryset(self):
+    #     return super().get_queryset().filter(announcement_id__user_id=self.request.user)
+
+    # def get_context_data(self, **kwargs):
+    #     context = super().get_context_data(**kwargs)
+    #     context['filter'] = ResponseFilter(self.request.GET, queryset=self.get_queryset())
+    #     return context
+
 
 class ResponseUpdateView(UpdateView):
     model = Response
@@ -109,8 +129,8 @@ class ResponseDeleteView(DeleteView):
     success_url = reverse_lazy("announcement_list")
 
 
-# Кастомная функция для загрузки файлом (в случчае сайта - изображений),
-#  разрешающая загрузку всем авторизированным пользователям
+# Кастомная функция для загрузки файлов (в случчае сайта - изображений),
+# разрешающая загрузку всем авторизированным пользователям
 def custom_upload_function(request):
     if request.method == "POST" and request.user.is_active:
         form = UploadFileForm(request.POST, request.FILES)
@@ -125,3 +145,11 @@ def custom_upload_function(request):
             url = handle_uploaded_file(request.FILES["upload"])
             return JsonResponse({"url": url})
     raise Http404("Page not found.")
+
+
+def approve_response(*args, **kwargs):
+    response = Response.objects.get(id=kwargs.get("pk"))
+    response.status = True
+    response.save()
+    notify_approved_response(response.id)
+    return redirect("announcement_list")

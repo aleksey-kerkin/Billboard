@@ -26,6 +26,8 @@ INSTALLED_APPS = [
     "django_ckeditor_5",
     "allauth",
     "allauth.account",
+    "django_apscheduler",
+    "django_filters",
 ]
 
 MIDDLEWARE = [
@@ -114,6 +116,13 @@ EMAIL_HOST_PASSWORD = os.getenv("EMAIL_HOST_PASSWORD")
 EMAIL_USE_SSL = True
 SITE_URL = "http://127.0.0.1:8000"
 DEFAULT_FROM_EMAIL = os.getenv("DEFAULT_FROM_EMAIL")
+
+# Письмо будет в терминале если будет включен DEBUG
+if DEBUG:
+    EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
+
+APSCHEDULER_DATETIME_FORMAT = "N j, Y, f:s a"
+APSCHEDULER_RUN_NOW_TIMEOUT = 25
 
 # Internationalization
 
@@ -316,7 +325,4 @@ CKEDITOR_5_CONFIGS = {
             "reversed": "true",
         }
     },
-    # "mediaEmbed": {
-    #     "previewsInData": True,
-    # },
 }

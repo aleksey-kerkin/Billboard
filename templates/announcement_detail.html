@@ -22,7 +22,7 @@
         <div class="card-body">
           <p class="card-text">{{ response.text }}</p>
           <p class="card-text">
-            <small class="text-muted">Created by {{ announcement.user.username }} at {{ announcement.created|date:'Y-m-d H:i' }}</small>
+            <small class="text-muted">Created by {{ response.user.username }} at {{ announcement.created|date:'Y-m-d H:i' }}</small>
           </p>
         </div>
         {% if request.user == response.user %}
