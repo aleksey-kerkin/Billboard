@@ -4,8 +4,8 @@
   <div class="card mb-3">
     <div class="card-body">
       <div class="embedly-card">
-        <h2 class="card-title"><a href="#">{{ announcement.title }}</a></h2>
-        <h5 class="card-title"><a href="#">{{ announcement.category }}</a></h5>
+        <h2 class="card-title">{{ announcement.title }}</h2>
+        <h5 class="card-title">Category: {{ announcement.category }}</h5>
         <p class="embedly-card">{{ announcement.text|safe }}</p>
         <p class="card-text">
           <small class="text-muted">Created by {{ announcement.user.username }} at {{ announcement.created|date:'Y-m-d H:i' }}</small>
@@ -16,9 +16,10 @@
         <a href="{% url 'announcement_delete' announcement.pk %}" class="btn btn-danger">Delete</a>
       {% endif %}
     </div>
-    <h2>Responses</h2>
+
     {% for response in responses %}
       <div class="card mb-3">
+        <h2>Responses</h2>
         <div class="card-body">
           <p class="card-text">{{ response.text }}</p>
           <p class="card-text">
@@ -31,6 +32,7 @@
         {% endif %}
       </div>
     {% empty %}
+      <hr />
       <p>No responses yet.</p>
     {% endfor %}
     <a href="{% url 'response_create' announcement.pk %}" class="btn btn-primary">Reply</a>

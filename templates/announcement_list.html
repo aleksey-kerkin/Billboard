@@ -6,7 +6,7 @@
     <div class="card mb-3">
       <div class="card-body">
         <h2 class="card-title"><a href={% url "announcement_detail" announcement.pk %}>{{ announcement.title }}</a></h2>
-        <h5 class="card-title"><a href="#">{{ announcement.category }}</a></h5>
+        <h5 class="card-title">Category: {{ announcement.get_category_display }}</h5>
         <p class="embedly-card">{{ announcement.text|safe }}</p>
         <p class="card-text">
           <small class="text-muted">Created by {{ announcement.user.username }} at {{ announcement.created|date:'Y-m-d H:i' }}</small>

@@ -11,6 +11,7 @@ from django.views.generic import (
 )
 from django_ckeditor_5.views import NoImageException, handle_uploaded_file, image_verify
 
+from billboard.filters import ResponseFilter
 from billboard.tasks import notify_approved_response, notify_new_response
 from .models import Announcement, Response, User
 from .forms import AnnouncementForm, ResponseForm
@@ -109,7 +110,12 @@ class ResponseListView(ListView):
     context_object_name = "responses"
 
     def get_queryset(self):
-        return Response.objects.filter(user=self.request.user)
+        return super().get_queryset().filter(announcement_id__user_id=self.request.user)
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["filter"] = ResponseFilter(self.request.GET, queryset=self.get_queryset())
+        return context
 
 
 class ResponseUpdateView(UpdateView):
