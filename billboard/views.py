@@ -112,7 +112,9 @@ class ResponseListView(ListView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context["filter"] = ResponseFilter(self.request.GET, queryset=self.get_queryset())
+        context["filter"] = ResponseFilter(
+            self.request.GET, queryset=self.get_queryset()
+            )
         return context
 
 
@@ -129,12 +131,14 @@ class ResponseDeleteView(DeleteView):
     success_url = reverse_lazy("announcement_list")
 
 
-# Кастомная функция для загрузки файлов (в случчае сайта - изображений),
+# Кастомная функция для загрузки файлов (в случае сайта - изображений),
 # разрешающая загрузку всем авторизированным пользователям
 def custom_upload_function(request):
     if request.method == "POST" and request.user.is_active:
         form = UploadFileForm(request.POST, request.FILES)
-        allow_all_file_types = getattr(settings, "CKEDITOR_5_ALLOW_ALL_FILE_TYPES", False)
+        allow_all_file_types = getattr(
+            settings, "CKEDITOR_5_ALLOW_ALL_FILE_TYPES", False
+            )
 
         if not allow_all_file_types:
             try:
