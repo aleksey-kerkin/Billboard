@@ -22,7 +22,6 @@ class AnnouncementListView(ListView):
     model = Announcement
     context_object_name = "announcements"
     template_name = "announcement_list.html"
-    paginate_by = 10
     ordering = ["-created"]
 
 
@@ -30,7 +29,6 @@ class AnnouncementUserListView(ListView):
     model = Announcement
     context_object_name = "announcements"
     template_name = "announcement_user_list.html"
-    paginate_by = 10
     ordering = ["-created"]
 
     def get_queryset(self):
