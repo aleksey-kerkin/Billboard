@@ -1,51 +1,33 @@
 {% extends 'base.html' %}
 
 {% block content %}
-  <h1>Your responses</h1>
-  {% for response in object_list %}
+  <h1>Responses</h1>
+  <form method="GET">
+    {{ filter.form }}
+    <input class="btn btn-primary" type="submit" value="Find" />
+  </form>
+  {% for response in filter.qs %}
     <div class="card mb-3">
-      <div class="card-body">
-        <h5 class="card-title">Response on "{{ response.announcement.title }}"</h5>
-        <p class="card-text">{{ response.text }}</p>
-        <a href="{% url 'announcement_detail' response.announcement.pk %}" class="btn btn-primary">Go to announcement</a>
-        {% if request.user == response.user %}
+      {% if response.announcement.user == user %}
+        <div class="card-body">
+          <h5 class="card-title">Response on "{{ response.announcement.title }}"</h5>
+          <p class="card-text">{{ response.text }}</p>
+          <a href="{% url 'announcement_detail' response.announcement.pk %}" class="btn btn-primary">Go to announcement</a>
+
           <a href="{% url 'response_update' response.pk %}" class="btn btn-warning">Edit</a>
           <a href="{% url 'response_delete' response.pk %}" class="btn btn-danger">Delete</a>
-          <div class=card-body>
-          {% if not response.status %}
-            <span class="text-danger">Отклик не принят!</span>
-            <a href="{% url 'respone_approve' response.id %}" class="btn btn-primary">Принять</a>
-          {% else %}
-            <span class="text-success">Принято!</span>
-          {% endif %}
+          <div class="card-body">
+            {% if not response.status %}
+              <span class="text-danger">Not aproved!</span>
+              <a href="{% url 'response_approve' response.id %}" class="btn btn-primary">Approve</a>
+            {% else %}
+              <span class="text-success">Approved!</span>
+            {% endif %}
           </div>
-        {% endif %}
-      </div>
+        </div>
+      {% endif %}
     </div>
   {% empty %}
     <p>No responses yet.</p>
-  {% endfor %}
-
-  <form method="GET">
-    {{ filter.form }}
-    <input class="btn btn-primary" type="submit" value="Найти" />
-  </form>
-
-  {% for r in filter.qs %}
-    {% if r.post.author == user %}
-      <div>
-        <hr />
-        {{ r }}
-        <br />
-        {% if not r.approved %}
-          <span class="text-danger">Отклик не обработан!</span>
-          <a href="{% url 'approveresp' r.id %}" class="btn btn-primary">Принять</a>
-        {% else %}
-          <span class="text-success">Принято!</span>
-        {% endif %}
-        <a href="{% url 'deleteresp' r.id %}" class="btn btn-primary">Удалить</a>
-        <hr />
-      </div>
-    {% endif %}
   {% endfor %}
 {% endblock %}

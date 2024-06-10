@@ -25,5 +25,5 @@ urlpatterns = [
     path("response/<int:pk>/delete/", ResponseDeleteView.as_view(), name="response_delete"),
     path("profile/<user>/my_responses", ResponseListView.as_view(), name="response_list"),
     path("profile/<user>/my_announcements", AnnouncementUserListView.as_view(), name="profile"),
-    path("response/<int:pk>/approve", approve_response, name="respone_approve"),
+    path("response/<int:pk>/approve", approve_response, name="response_approve"),
 ]

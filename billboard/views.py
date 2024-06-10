@@ -11,6 +11,7 @@ from django.views.generic import (
 )
 from django_ckeditor_5.views import NoImageException, handle_uploaded_file, image_verify
 
+from billboard.filters import ResponseFilter
 from billboard.tasks import notify_approved_response, notify_new_response
 from .models import Announcement, Response, User
 from .forms import AnnouncementForm, ResponseForm
@@ -21,7 +22,6 @@ class AnnouncementListView(ListView):
     model = Announcement
     context_object_name = "announcements"
     template_name = "announcement_list.html"
-    paginate_by = 10
     ordering = ["-created"]
 
 
@@ -29,7 +29,6 @@ class AnnouncementUserListView(ListView):
     model = Announcement
     context_object_name = "announcements"
     template_name = "announcement_user_list.html"
-    paginate_by = 10
     ordering = ["-created"]
 
     def get_queryset(self):
@@ -109,7 +108,14 @@ class ResponseListView(ListView):
     context_object_name = "responses"
 
     def get_queryset(self):
-        return Response.objects.filter(user=self.request.user)
+        return super().get_queryset().filter(announcement_id__user_id=self.request.user)
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["filter"] = ResponseFilter(
+            self.request.GET, queryset=self.get_queryset()
+            )
+        return context
 
 
 class ResponseUpdateView(UpdateView):
@@ -125,12 +131,14 @@ class ResponseDeleteView(DeleteView):
     success_url = reverse_lazy("announcement_list")
 
 
-# Кастомная функция для загрузки файлов (в случчае сайта - изображений),
+# Кастомная функция для загрузки файлов (в случае сайта - изображений),
 # разрешающая загрузку всем авторизированным пользователям
 def custom_upload_function(request):
     if request.method == "POST" and request.user.is_active:
         form = UploadFileForm(request.POST, request.FILES)
-        allow_all_file_types = getattr(settings, "CKEDITOR_5_ALLOW_ALL_FILE_TYPES", False)
+        allow_all_file_types = getattr(
+            settings, "CKEDITOR_5_ALLOW_ALL_FILE_TYPES", False
+            )
 
         if not allow_all_file_types:
             try:

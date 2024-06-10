@@ -8,9 +8,9 @@ def notify_new_response(pk):
     response = Response.objects.get(id=pk)
     try:
         send_mail(
-            subject="MMORPG - new response to your announcement!",
-            message=f"Привет, {response.announcement.user}!\n"
-            f'На ваше объявление "{response.announcement.title}" есть новый отклик.\n'
+            subject="MMORPG - New response to your announcement!",
+            message=f"Howdy, {response.announcement.user}!\n"
+            f'There is a new response to your announcement "{response.announcement.title}".\n'
             f'{response.user}: "{response.text}", ',
             from_email=settings.DEFAULT_FROM_EMAIL,
             recipient_list=[
@@ -25,10 +25,10 @@ def notify_approved_response(pk):
     response = Response.objects.get(id=pk)
     try:
         send_mail(
-            subject="MMORPG - your response is approved!",
-            message=f"Привет, {response.user}!\n"
-            f'Ваш отклик на объявление "{response.announcement.title}" принят.\n'
-            f"Посмотреть объявление целиком можно по ссылке:\n"
+            subject="MMORPG - Your response is approved!",
+            message=f"Howdy, {response.user}!\n"
+            f'Your response to the "{response.announcement.title}" has been accepted.\n'
+            f"You can view the entire announcement at the link:\n"
             f"{settings.SITE_URL}/{response.announcement.id}",
             from_email=settings.DEFAULT_FROM_EMAIL,
             recipient_list=[
